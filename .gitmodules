@@ -1,0 +1,6 @@
+[submodule "reference/ST3215_Driver"]
+	path = reference/ST3215_Driver
+	url = https://github.com/cwyWill/ST3215_Driver.git
+[submodule "reference/eigen"]
+	path = reference/eigen
+	url = https://gitlab.com/libeigen/eigen.git
