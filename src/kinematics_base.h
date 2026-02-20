@@ -24,8 +24,8 @@ public:
 
 
     struct JointConstraint {
-        T min_angle {-180};
-        T max_angle {180};
+        T min_angle {-M_PI};
+        T max_angle {M_PI};
         T max_velocity {};
         T max_acceleration {};
         T max_jerk {};
@@ -69,12 +69,12 @@ public:
 
 public:
     // KinematicsBase(const JointConstraints& joint_constraints) : m_joint_constraints { joint_constraints} {}
-    ~KinematicsBase() = default;
+    virtual ~KinematicsBase() = default;
 
 public:
     // return the first solution found for the target pose
     virtual IKSolution solve(const Vector3& target_position) = 0;
-    virtual IKSolution solve(const Pose& targetPose);
+    virtual IKSolution solve(const Pose& targetPose) = 0;
     // return the solution closest to the current joint angles
     // virtual IKSolution solve(const Matrix4& targetPose, const JointAngles& current_angles);
 
@@ -82,9 +82,20 @@ public:
     virtual std::vector<IKSolution> solveAll(const Pose& target_pose, const JointAngles& inital_cond) = 0;
 
 
-    virtual std::optional<Pose> FK(const JointAngles& joint_angles) const = 0;
+    // virtual std::optional<Pose> FK(const JointAngles& joint_angles) = 0;
+    virtual std::optional<Matrix4> FK(const JointAngles& joint_angles) = 0;
     
     virtual bool isReachable(const Pose& target_pose) const = 0;
+
+protected:
+    Matrix4 DH_trans(const T alpha, const T a, const T d, const T theta) {
+        return Matrix4 {
+            {cos(theta), -sin(theta), 0, a},
+            {sin(theta)*cos(alpha), cos(theta)*cos(alpha), -sin(alpha), -sin(alpha)*d},
+            {sin(theta)*sin(alpha), cos(theta)*sin(alpha),  cos(alpha),  cos(alpha)*d},
+            {0, 0, 0, 1}
+        };
+    }
     
 protected:
     JointConstraints m_joint_constraints {};

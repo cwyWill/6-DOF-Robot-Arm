@@ -27,6 +27,8 @@ class Kinematics_6DOF_RobotArm : KinematicsBase<double, 6> {
 public:
     using Base = KinematicsBase<double, 6>;
     using typename Base::Vector3;
+    using typename Base::Matrix3;
+    using typename Base::Matrix4;
     using typename Base::Quaternion;
     using typename Base::Pose;
     using typename Base::JointAngles;
@@ -36,6 +38,7 @@ public:
 
 public:
     // Kinematics_6DOF_RobotArm( const JointConstraints& jc);
+    void setConstraints(const JointConstraints& jc);
 
     // IKSolution solve(const Vector3& target_position) = 0;
     IKSolution solve(const Pose& target_pose) override;
@@ -46,7 +49,8 @@ public:
 
     std::vector<IKSolution> solveAll(const Pose& target_pose, const JointAngles& inital_cond) override;
 
-    std::optional<Pose> FK(const JointAngles& joint_angles) const;
+    // std::optional<Pose> FK(const JointAngles& joint_angles) const;
+    std::optional<Matrix4> FK(const JointAngles& joint_angles);
     bool isReachable(const Pose& target_pose) const override;
 
     
@@ -58,10 +62,10 @@ public:
 
 
 private:
-    constexpr static double m_alpha1 {  M_PI_2 };
-    constexpr static double m_alpha3 {  M_PI_2 };
-    constexpr static double m_alpha4 { -M_PI_2 };
-    constexpr static double m_alpha5 {  M_PI_2 };
+    constexpr static double m_alpha1 { -M_PI_2 };
+    constexpr static double m_alpha3 { -M_PI_2 };
+    constexpr static double m_alpha4 {  M_PI_2 };
+    constexpr static double m_alpha5 { -M_PI_2 };
 
     constexpr static double m_d1 { 60 };
     constexpr static double m_d4 { 135 };
@@ -79,9 +83,7 @@ private:
     // potential_solution: out parameter
     void solveT2(std::vector<PartialSolution>& potential_solutions, const Matrix4& transMat, const PartialSolution& ps);
     // potential_solution: out parameter
-    void solveT4(std::vector<PartialSolution>& potential_solutions, const Matrix4& transMat, const PartialSolution& ps);
-    // potential_solution: out parameter
-    void solveT5(std::vector<PartialSolution>& potential_solutions, const Matrix4& transMat, const PartialSolution& ps);
+    void solveT45(std::vector<PartialSolution>& potential_solutions, const Matrix4& transMat, const PartialSolution& ps, const JointAngles& initial_cond);
     // potential_solution: out parameter
     void solveT6(std::vector<PartialSolution>& potential_solutions, const Matrix4& transMat, const PartialSolution& ps);
 
