@@ -132,12 +132,7 @@ Kinematics_6DOF_RobotArm::solveT1(std::vector<PartialSolution>& potential_soluti
     // case 1
     // theta1 = atan2(py, px)
     t1 = atan2(py, px);
-    if ( m_joint_constraints[0].isWithinLimits(t1) )      // check range
-        potential_solutions.push_back( PartialSolution {t1, 0, 0, 0, 0, 0} );
-
-    // case 2
-    // theta1 = atan2(-py, -px)
-    t1 = atan2(-py, -px);
+    t1 = wrapToPi(t1);
     if ( m_joint_constraints[0].isWithinLimits(t1) )      // check range
         potential_solutions.push_back( PartialSolution {t1, 0, 0, 0, 0, 0} );
 }
@@ -149,10 +144,10 @@ Kinematics_6DOF_RobotArm::solveT3(std::vector<PartialSolution>& potential_soluti
     const double pz { transMat(2, 3) };
     const double t1 { ps[0] };
 
-    double s3 { 1. / m_a2 / m_d4 };
+    constexpr static double denom { 1 / ( 2 * m_a2 * m_d4 ) };
+    double s3 { denom };
     s3 *= ( pow(m_a2, 2) + pow(m_d4, 2) - pow(px, 2) - pow(py, 2) - pow((pz - m_d1), 2) );
 
-    // no solution. shouldn't happen though
     if ( abs( s3 ) > 1)
         return;
 
@@ -161,12 +156,23 @@ Kinematics_6DOF_RobotArm::solveT3(std::vector<PartialSolution>& potential_soluti
     
     // case 1
     t3 = atan2(s3, c3);
+    t3 = wrapToPi(t3);
     if ( m_joint_constraints[2].isWithinLimits(t3) )      // check range
         potential_solutions.push_back( PartialSolution{ t1, 0, t3, 0, 0, 0 } );
     // case 2
     t3 = atan2(s3, -c3);
+    t3 = wrapToPi(t3);
     if ( m_joint_constraints[2].isWithinLimits(t3) )      // check range
         potential_solutions.push_back( PartialSolution{ t1, 0, t3, 0, 0, 0 } );
+
+    // const double K { ( pow(px, 2) + pow(py, 2) + pow((pz - m_d1), 2) - pow(m_a2, 2) - pow(m_d4, 2) ) / (2.0 * m_a2)};
+    // double t3 {};
+    // t3 = atan2( K, sqrt( pow(m_d4, 2) - pow(K, 2) ) );
+    // if ( m_joint_constraints[2].isWithinLimits(t3) )      // check range
+    //     potential_solutions.push_back( PartialSolution{ t1, 0, t3, 0, 0, 0 } );
+    // t3 = atan2( K, -sqrt( pow(m_d4, 2) - pow(K, 2) ) );
+    // if ( m_joint_constraints[2].isWithinLimits(t3) )      // check range
+    //     potential_solutions.push_back( PartialSolution{ t1, 0, t3, 0, 0, 0 } );
 }
 
 void
@@ -178,16 +184,11 @@ Kinematics_6DOF_RobotArm::solveT2(std::vector<PartialSolution>& potential_soluti
     const double t3 { ps[2] };
 
     // target t2
-
-    // coefficients
-    const double s23 { (cos(t1)*px + sin(t1)*py) * (m_d4 - m_a2*sin(t3)) - (m_a2 * cos(t3)) * (pz - m_d1) };
-    const double c23 { (m_a2*cos(t3)) * (cos(t1)*px + sin(t1)*py) - m_d4 * (pz - m_d1) };
-    const double t23 { atan2(s23, t23) };
-    
-    // pruning. no valid result
-    const double t2 { t23 - t3 };
+    double t23 { atan2( ( (-m_a2*cos(t3))*(pz-m_d1) + (cos(t1)*px+sin(t1)*py)*(m_a2*sin(t3)-m_d4)) , ( (m_a2*sin(t3)-m_d4)*(pz-m_d1) - (-m_a2*cos(t3))*(cos(t1)*px+sin(t1)*py) ) ) };
+    double t2 { t23 - t3 };
+    t2 = wrapToPi(t2);
     if ( m_joint_constraints[1].isWithinLimits(t2) )      // check range
-        potential_solutions.push_back( PartialSolution{ t1, t2, t3, 0, 0, 0 });
+        potential_solutions.push_back( PartialSolution{ t1, t2, t3, 0, 0, 0 } );
 }
 
 void
@@ -201,7 +202,7 @@ Kinematics_6DOF_RobotArm::solveT45(std::vector<PartialSolution>& potential_solut
 
     const double t1 { ps[0] };
     const double t2 { ps[1] };
-    const double t3 { ps[3] };
+    const double t3 { ps[2] };
     const double t23 { t2+t3 };
     
     // target angles`
@@ -225,7 +226,6 @@ Kinematics_6DOF_RobotArm::solveT45(std::vector<PartialSolution>& potential_solut
     if ( abs(s4) > 1 || abs(c4) > 1)
         return;
 
-
     double s5 {};
     double c5 {};
 
@@ -236,6 +236,7 @@ Kinematics_6DOF_RobotArm::solveT45(std::vector<PartialSolution>& potential_solut
          +r33 * cos(t4)*sin(t23);
     c5 = -r13 * cos(t1)*sin(t23) - r23 * sin(t1)*sin(t23) - r33 * cos(t23);
     t5 = atan2(s5, c5);
+    t5 = wrapToPi(t5);
 
     if ( abs(s5) <= 1 && abs(c5) <= 1 ){
         if ( m_joint_constraints[3].isWithinLimits(t4) && m_joint_constraints[4].isWithinLimits(t5) )      // check range
@@ -243,11 +244,13 @@ Kinematics_6DOF_RobotArm::solveT45(std::vector<PartialSolution>& potential_solut
     }
 
     t4 = atan2(-s4, -c4);
+    t4 = wrapToPi(t4);
     s5 = -r13 * (sin(1)*sin(t4) + cos(t1)*cos(t4)*cos(t23)) 
          -r23 * (-cos(t1)*sin(t4) + sin(t1)*cos(t4)*cos(t23) )
          +r33 * cos(t4)*sin(t23);
     c5 = -r13 * cos(t1)*sin(t23) - r23 * sin(t1)*sin(t23) - r33 * cos(t23);
     t5 = atan2(s5, c5);
+    t5 = wrapToPi(t5);
 
     if ( abs(s5) <= 1 && abs(c5) <= 1 ){
         if ( m_joint_constraints[3].isWithinLimits(t4) && m_joint_constraints[4].isWithinLimits(t5) )      // check range
@@ -280,6 +283,7 @@ Kinematics_6DOF_RobotArm::solveT6(std::vector<PartialSolution>& potential_soluti
     if ( abs(c6) > 1 )  return;
 
     double t6 { atan2(s6, c6) };
+    t6 = wrapToPi(t6);
     if ( m_joint_constraints[5].isWithinLimits(t6) )      // check range
         potential_solutions.push_back(PartialSolution{t1, t2, t3, t4, t5, t6});
 
