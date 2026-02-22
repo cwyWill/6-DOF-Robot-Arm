@@ -41,6 +41,12 @@ public:
     using JointAngles = std::array<T, DOF>;
     using JointConstraints = std::array<JointConstraint, DOF>;
 
+    /**
+     * \brief Represents the pose of the end-effector, including position and orientation.
+     * The position is represented as a 3D vector, and the orientation is represented as a quaternion.
+     * @param position (Vector3) The position of the end-effector in 3D space.
+     * @param orientation (Quaternion) The orientation of the end-effector, represented as a quaternion.
+     */
     struct Pose {
         Vector3 position { Vector3::Zero() };
         Quaternion orientation { Quaternion::Identity() };

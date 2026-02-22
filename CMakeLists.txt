@@ -9,13 +9,18 @@ add_executable(robot
     test.cpp
 )
 
-
 add_library(eigen INTERFACE)
 
 target_include_directories(eigen INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/reference/eigen
 )
 
+add_subdirectory(reference/ST3215_Driver)
+
 target_link_libraries(robot
-    PRIVATE eigen
+    PRIVATE
+        eigen
+        ST3215
 )
+
+
