@@ -11,7 +11,26 @@
 
 namespace Robotics {
 
+// Function to wrap an angle to the range [-pi, pi)
+inline double wrapToPi(double angle) {
+    // In C++20 and later, use std::numbers::pi
+    // For older C++, you can use M_PI from <cmath> (if available) or calculate it (e.g., 4 * atan(1.0)).
+    // Here we use M_PI for broad compatibility, ensure your compiler defines it (often requires a specific macro like _USE_MATH_DEFINES on Windows).
+    
+    double pi = std::acos(-1.0); // A reliable way to get PI if M_PI is unavailable
+    double two_pi = 2.0 * pi;
 
+    // Use fmod to constrain the angle to a range of width 2*pi,
+    // but the result range is based on the sign of angle (e.g. [-2pi, 2pi) or [0, 2pi)).
+    // A correction is needed for negative results to fit into [-pi, pi).
+
+    double wrapped = std::fmod(angle + pi, two_pi);
+    if (wrapped < 0) {
+        wrapped += two_pi;
+    }
+    // Now 'wrapped' is in the range [0, 2*pi). Shift it to [-pi, pi).
+    return wrapped - pi;
+}
 
 template <typename T, std::size_t DOF>
 class KinematicsBase {
@@ -31,7 +50,9 @@ public:
         T max_jerk {};
 
         bool isWithinLimits(T angle) const {
-            return angle >= min_angle && angle <= max_angle;
+            bool within_limits { angle >= min_angle && angle <= max_angle};
+            // return true; // temporary: ignore limits
+            return within_limits;
         }
         T clamp(T angle) const {
             return std::clamp(angle, min_angle, max_angle);
