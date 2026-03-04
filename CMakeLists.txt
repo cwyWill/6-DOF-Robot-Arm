@@ -9,6 +9,13 @@ add_executable(robot
     test.cpp
 )
 
+add_executable(kinematics
+    src/kinematics_base.h
+    robot_arm_6dof_kinematics.h
+    robot_arm_6dof_kinematics.cpp
+    kinematics.cpp
+)
+
 add_library(eigen INTERFACE)
 
 target_include_directories(eigen INTERFACE
@@ -23,4 +30,8 @@ target_link_libraries(robot
         ST3215
 )
 
+target_link_libraries(kinematics
+    PRIVATE
+        eigen
+)
 

@@ -1,5 +1,6 @@
 #include "robot_arm_6dof_kinematics.h"
 #include <algorithm>
+#include <iostream>
 
 namespace Robotics {
 
@@ -33,13 +34,16 @@ Kinematics_6DOF_RobotArm::solve(const Pose& target_pose) {
         return allSolutions[0];
     return {};
 }
-Kinematics_6DOF_RobotArm::IKSolution
-Kinematics_6DOF_RobotArm::solve(const Vector3& position) {
-    return {};
-}
+
+// Kinematics_6DOF_RobotArm::IKSolution
+// Kinematics_6DOF_RobotArm::solve(const Vector3& position) {
+//     return {};
+// }
 
 std::vector<Kinematics_6DOF_RobotArm::IKSolution>
 Kinematics_6DOF_RobotArm::solveAll(const Pose& target_pose, const JointAngles& initial_cond) {
+    if ( !isReachable(target_pose) )
+        return {};
     std::vector<IKSolution> allSolutions { solveAll(target_pose) };
     // TODO: not the best way to return empty solution
     if ( allSolutions.empty() )
@@ -75,16 +79,11 @@ Kinematics_6DOF_RobotArm::solveAll(const Pose& target_pose) {
         solveT2(stage2, transMat, ps);
     }
     
-    // use stage2 to solve t4
+    // use stage2 to solve t4 and t5
     std::vector<PartialSolution> stage4;
     for ( const PartialSolution& ps : stage2 ) {
         solveT45(stage4, transMat, ps, {});
     }
-
-    // std::vector<PartialSolution> stage5;
-    // for ( const PartialSolution& ps : stage4 ) {
-    //     solveT5(stage5, transMat, ps);
-    // }
 
     std::vector<PartialSolution> stage6;
     for ( const PartialSolution& ps : stage4 ) {
@@ -100,28 +99,30 @@ Kinematics_6DOF_RobotArm::solveAll(const Pose& target_pose) {
     return solution;
 }
 
-
-// TODO
-
-std::optional<Kinematics_6DOF_RobotArm::Matrix4>
+Kinematics_6DOF_RobotArm::Matrix4
 Kinematics_6DOF_RobotArm::FK(const JointAngles& joint_angles) {
     // check all joint angles
     for ( std::size_t i {0}; i < 6; ++i ) {
         if ( ! m_joint_constraints[i].isWithinLimits(joint_angles[i]) )
             return {};
     }
-    return DH_trans(       0,    0, m_d1, joint_angles[0]) * 
-           DH_trans(m_alpha1,    0,    0, joint_angles[1]) * 
-           DH_trans(       0, m_a2,    0, joint_angles[2]) *
-           DH_trans(m_alpha3,    0, m_d4, joint_angles[3]) *
-           DH_trans(m_alpha4,    0,    0, joint_angles[4]) *
-           DH_trans(m_alpha5,    0, m_d6, joint_angles[5]);
+    return  DH_trans(       0,    0, m_d1, joint_angles[0]) * 
+            DH_trans(m_alpha1,    0,    0, joint_angles[1]) * 
+            DH_trans(       0, m_a2,    0, joint_angles[2]) *
+            DH_trans(m_alpha3,    0, m_d4, joint_angles[3]) *
+            DH_trans(m_alpha4,    0,    0, joint_angles[4]) *
+            DH_trans(m_alpha5,    0, m_d6, joint_angles[5]);
 }
 
 bool Kinematics_6DOF_RobotArm::isReachable(const Pose& target_pose) const {
-     return false;
+    const double px { target_pose.position[0] };
+    const double py { target_pose.position[1] };
+    const double pz { target_pose.position[2] };
+    // a2 + d4
+    if ( pow(px, 2) + pow(py, 2) + pow(pz, 2) > pow(m_a2 + m_d4, 2) )
+        return false;
+    return true;
 }
-
 
 void
 Kinematics_6DOF_RobotArm::solveT1(std::vector<PartialSolution>& potential_solutions, const Matrix4& transMat) {
@@ -216,7 +217,8 @@ Kinematics_6DOF_RobotArm::solveT45(std::vector<PartialSolution>& potential_solut
 
     // t5 = 0
     // if s4*s5 == 0 and c4*s5 == 0, s5 = 0, t5 = 0
-    if ( abs( s4 ) < 1e-10 && abs( c4 ) < 1e-10) {
+    if ( std::abs( s4 ) < 1e-6 && std::abs( c4 ) < 1e-6) {
+        std::cout << "s4: " << s4 << ", c4: " << c4 << '\n';
         t5 = 0;
         t4 = initial_cond[3];
         potential_solutions.push_back( PartialSolution{t1, t2, t3, t4, t5, 0} );
@@ -289,5 +291,6 @@ Kinematics_6DOF_RobotArm::solveT6(std::vector<PartialSolution>& potential_soluti
 
 }
  
+
 
 }       // Robotics

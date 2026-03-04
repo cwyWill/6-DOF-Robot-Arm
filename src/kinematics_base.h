@@ -13,23 +13,11 @@ namespace Robotics {
 
 // Function to wrap an angle to the range [-pi, pi)
 inline double wrapToPi(double angle) {
-    // In C++20 and later, use std::numbers::pi
-    // For older C++, you can use M_PI from <cmath> (if available) or calculate it (e.g., 4 * atan(1.0)).
-    // Here we use M_PI for broad compatibility, ensure your compiler defines it (often requires a specific macro like _USE_MATH_DEFINES on Windows).
-    
-    double pi = std::acos(-1.0); // A reliable way to get PI if M_PI is unavailable
-    double two_pi = 2.0 * pi;
-
-    // Use fmod to constrain the angle to a range of width 2*pi,
-    // but the result range is based on the sign of angle (e.g. [-2pi, 2pi) or [0, 2pi)).
-    // A correction is needed for negative results to fit into [-pi, pi).
-
-    double wrapped = std::fmod(angle + pi, two_pi);
+    double wrapped = std::fmod(angle + M_PI, M_PI*2.);
     if (wrapped < 0) {
-        wrapped += two_pi;
+        wrapped += M_PI*2.;
     }
-    // Now 'wrapped' is in the range [0, 2*pi). Shift it to [-pi, pi).
-    return wrapped - pi;
+    return wrapped - M_PI;
 }
 
 template <typename T, std::size_t DOF>
@@ -41,7 +29,9 @@ public:
     using Matrix4 = Eigen::Matrix<T, 4, 4>;
     using Matrix3 = Eigen::Matrix<T, 3, 3>;
 
-
+    /**
+     * @brief The constraint of a joint, including limits on angle, velocity, acceleration, and jerk.
+     */
     struct JointConstraint {
         T min_angle {-M_PI};
         T max_angle {M_PI};
@@ -54,12 +44,25 @@ public:
             // return true; // temporary: ignore limits
             return within_limits;
         }
+        /**
+         * @brief Clamp the angle to be within the joint limits.
+         * 
+         * @param angle 
+         * @return clamped angle
+         */
         T clamp(T angle) const {
             return std::clamp(angle, min_angle, max_angle);
         }
     };
 
+    /**
+     * @brief An array of joint angles
+     * @tparam T The scalar type for joint angles.
+     */
     using JointAngles = std::array<T, DOF>;
+    /**
+     * @brief An array of JointConstraint.
+     */
     using JointConstraints = std::array<JointConstraint, DOF>;
 
     /**
@@ -80,6 +83,9 @@ public:
         }
     };
 
+    /**
+     * @brief The metadata of an inverse kinematics solution
+     */
     struct SolutionMetadata {
         T position_error {};
         T orientation_error {};
@@ -88,6 +94,9 @@ public:
         T condition_number {};
     };
 
+    /**
+     * @brief The inverse kinematis solution, including joint angles and solution metadata.
+     */
     struct IKSolution {
         JointAngles joint_angles {};
         SolutionMetadata metadata {};
@@ -95,22 +104,45 @@ public:
     };
 
 public:
-    // KinematicsBase(const JointConstraints& joint_constraints) : m_joint_constraints { joint_constraints} {}
+    /**
+     * @brief Destroy the Kinematics Base object
+     */
     virtual ~KinematicsBase() = default;
 
 public:
-    // return the first solution found for the target pose
-    virtual IKSolution solve(const Vector3& target_position) = 0;
+    // /**
+    //  * @brief Solve the inverse kinematics with a given target position.
+    //  * @param target_position 
+    //  * @return IKSolution 
+    //  */
+    // virtual IKSolution solve(const Vector3& target_position) = 0;
+
+    /**
+     * @brief Solve the inverse kinematics with a given target pose.
+     * @param pose 
+     * @return IKSolution The inverse kinematics solution.
+     */
     virtual IKSolution solve(const Pose& targetPose) = 0;
     // return the solution closest to the current joint angles
     // virtual IKSolution solve(const Matrix4& targetPose, const JointAngles& current_angles);
 
+    /**
+     * @brief Solve all IK solution with a given target pose.
+     * 
+     * @param target_pose 
+     * @return std::vector<IKSolution> 
+     */
     virtual std::vector<IKSolution> solveAll(const Pose& target_pose) = 0;
+    /**
+     * @brief Solve all IK solution with a given target pose. If initial condition is provided, the solutions are sorted by joint angle errors.
+     * 
+     * @param target_pose 
+     * @return std::vector<IKSolution> 
+     */
     virtual std::vector<IKSolution> solveAll(const Pose& target_pose, const JointAngles& inital_cond) = 0;
 
 
-    // virtual std::optional<Pose> FK(const JointAngles& joint_angles) = 0;
-    virtual std::optional<Matrix4> FK(const JointAngles& joint_angles) = 0;
+    virtual Matrix4 FK(const JointAngles& joint_angles) = 0;
     
     virtual bool isReachable(const Pose& target_pose) const = 0;
 

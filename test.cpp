@@ -28,7 +28,7 @@ int main() {
                 ServoCalibration {
                     2014,   // correction
                     { 2014-1024, 2014+1024 }, // target angle limit
-                    true   // posDirection
+                    false   // posDirection
                 },
                 st
             },
@@ -36,7 +36,7 @@ int main() {
                 12, // ID
                 ServoCalibration {
                     2028,   // correction
-                    { 1000, 2030},
+                    { 200, 2030},
                     true   // posDirection
                 },
                 st
@@ -55,7 +55,7 @@ int main() {
                 ServoCalibration {
                     2062,   // correction
                     { 1030, 3100},
-                    true   // posDirection
+                    false   // posDirection
                 },
                 st
             },
@@ -73,20 +73,25 @@ int main() {
                 ServoCalibration {
                     2047,   // correction
                     { 0, 4095},
-                    true   // posDirection
+                    false   // posDirection
                 },
                 st
             },
-
-
-
-
-
         },
         st
     };
 
-    Kinematics_6DOF_RobotArm::Pose pose { {130, 0, 100}, {0.8660254, .5, 0, 0} };
+    if ( !AH.selfInspect() ) {
+        std::cerr << "Actuator self-inspection failed.\n";
+        return -1;
+    }
+    Kinematics_6DOF_RobotArm::Quaternion quat { 0, 1, 0, 0 };
+    // Kinematics_6DOF_RobotArm::Quaternion quat { cos(.872), 0, sin(.872), 0 };
+    // quat = quat * Kinematics_6DOF_RobotArm::Quaternion { 0, 1, 0, 0 };
+    std::cout << "quat: " << quat.w() << ' ' << quat.x() << ' ' << quat.y() << ' ' << quat.z() << '\n';
+
+
+    Kinematics_6DOF_RobotArm::Pose pose { {130, 0, 90}, quat};
     auto solutions { RAK.solveAll(pose) };
 
     std::cout << "Number of solution: " << solutions.size() << '\n';
@@ -96,18 +101,21 @@ int main() {
         std::cout << solution.joint_angles << '\n';
     }
 
-    Kinematics_6DOF_RobotArm::IKSolution solution { solutions[0] };
-    // AH.setAngle({0, 1, 2, 3}, {solution.joint_angles[0], solution.joint_angles[1], solution.joint_angles[2], solution.joint_angles[3]});
-    // AH.setAngle({0, 1, 2}, {solution.joint_angles[0], solution.joint_angles[1], M_PI_4});
+    // Kinematics_6DOF_RobotArm::IKSolution solution { solutions[0] };
     // AH.setAngle(solution.joint_angles);
-    // std::this_thread::sleep_for(std::chrono::seconds(2));
-    // AH.updateAllFeedback();
-    // auto angles { AH.getAllAngle() };
-    // for ( const double angle : angles ) {
-    //     std::cout << angle << ' ';
-    // }
-    // std::cout << '\n'; 
-    // AH.disableTorque();
+    AH.setAngle( Kinematics_6DOF_RobotArm::nominal_joint_angles );
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    AH.updateAllFeedback();
+    auto angles { AH.getAllAngle() };
+    for ( const double angle : angles ) {
+        std::cout << angle << ' ';
+    }
+    std::cout << '\n'; 
+
+    AH.setAngle( Kinematics_6DOF_RobotArm::nominal_joint_angles );
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    AH.disableTorque();
 
     return 0;
 }
