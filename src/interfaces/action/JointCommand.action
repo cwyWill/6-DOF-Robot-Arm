@@ -1,0 +1,5 @@
+JointAngleArray cmd_angle
+---
+JointAngleArray result_angle
+---
+JointAngleArray fb_angle

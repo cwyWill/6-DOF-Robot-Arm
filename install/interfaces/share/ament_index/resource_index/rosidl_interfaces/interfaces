@@ -1,0 +1,6 @@
+action/JointCommand.action
+action/JointCommand.idl
+msg/JointAngle.idl
+msg/JointAngle.msg
+msg/JointAngleArray.idl
+msg/JointAngleArray.msg

@@ -1,0 +1,19 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from interfaces/action/JointCommand.action
+// generated code does not contain a copyright notice
+
+#include "interfaces/msg/JointAngleArray.idl"
+
+module interfaces {
+  module action {
+    struct JointCommand_Goal {
+      interfaces::msg::JointAngleArray cmd_angle;
+    };
+    struct JointCommand_Result {
+      interfaces::msg::JointAngleArray result_angle;
+    };
+    struct JointCommand_Feedback {
+      interfaces::msg::JointAngleArray fb_angle;
+    };
+  };
+};

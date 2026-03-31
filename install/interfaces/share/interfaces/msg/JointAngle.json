@@ -1,0 +1,26 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "interfaces/msg/JointAngle",
+      "fields": [
+        {
+          "name": "angle",
+          "type": {
+            "type_id": 11,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": []
+  },
+  "type_hashes": [
+    {
+      "type_name": "interfaces/msg/JointAngle",
+      "hash_string": "RIHS01_be9994beb86a449540bb6b40e92e93de217a33c28af4c418a29929840e21eb8a"
+    }
+  ]
+}

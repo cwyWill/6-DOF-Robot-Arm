@@ -1,0 +1,26 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "interfaces/msg/JointAngleArray",
+      "fields": [
+        {
+          "name": "angles",
+          "type": {
+            "type_id": 59,
+            "capacity": 6,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": []
+  },
+  "type_hashes": [
+    {
+      "type_name": "interfaces/msg/JointAngleArray",
+      "hash_string": "RIHS01_c642630f25ceca20fe886ee436afd51c32f00b7158526f2de1b332680b515c2d"
+    }
+  ]
+}

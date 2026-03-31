@@ -1,0 +1,541 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "interfaces/action/JointCommand",
+      "fields": [
+        {
+          "name": "goal",
+          "type": {
+            "type_id": 1,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": "interfaces/action/JointCommand_Goal"
+          },
+          "default_value": ""
+        },
+        {
+          "name": "result",
+          "type": {
+            "type_id": 1,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": "interfaces/action/JointCommand_Result"
+          },
+          "default_value": ""
+        },
+        {
+          "name": "feedback",
+          "type": {
+            "type_id": 1,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": "interfaces/action/JointCommand_Feedback"
+          },
+          "default_value": ""
+        },
+        {
+          "name": "send_goal_service",
+          "type": {
+            "type_id": 1,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": "interfaces/action/JointCommand_SendGoal"
+          },
+          "default_value": ""
+        },
+        {
+          "name": "get_result_service",
+          "type": {
+            "type_id": 1,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": "interfaces/action/JointCommand_GetResult"
+          },
+          "default_value": ""
+        },
+        {
+          "name": "feedback_message",
+          "type": {
+            "type_id": 1,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": "interfaces/action/JointCommand_FeedbackMessage"
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": [
+      {
+        "type_name": "builtin_interfaces/msg/Time",
+        "fields": [
+          {
+            "name": "sec",
+            "type": {
+              "type_id": 6,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "nanosec",
+            "type": {
+              "type_id": 7,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_Feedback",
+        "fields": [
+          {
+            "name": "fb_angle",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/msg/JointAngleArray"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_FeedbackMessage",
+        "fields": [
+          {
+            "name": "goal_id",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "unique_identifier_msgs/msg/UUID"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "feedback",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_Feedback"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_GetResult",
+        "fields": [
+          {
+            "name": "request_message",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_GetResult_Request"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "response_message",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_GetResult_Response"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "event_message",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_GetResult_Event"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_GetResult_Event",
+        "fields": [
+          {
+            "name": "info",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "service_msgs/msg/ServiceEventInfo"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "request",
+            "type": {
+              "type_id": 97,
+              "capacity": 1,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_GetResult_Request"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "response",
+            "type": {
+              "type_id": 97,
+              "capacity": 1,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_GetResult_Response"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_GetResult_Request",
+        "fields": [
+          {
+            "name": "goal_id",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "unique_identifier_msgs/msg/UUID"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_GetResult_Response",
+        "fields": [
+          {
+            "name": "status",
+            "type": {
+              "type_id": 2,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "result",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_Result"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_Goal",
+        "fields": [
+          {
+            "name": "cmd_angle",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/msg/JointAngleArray"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_Result",
+        "fields": [
+          {
+            "name": "result_angle",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/msg/JointAngleArray"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_SendGoal",
+        "fields": [
+          {
+            "name": "request_message",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_SendGoal_Request"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "response_message",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_SendGoal_Response"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "event_message",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_SendGoal_Event"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_SendGoal_Event",
+        "fields": [
+          {
+            "name": "info",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "service_msgs/msg/ServiceEventInfo"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "request",
+            "type": {
+              "type_id": 97,
+              "capacity": 1,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_SendGoal_Request"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "response",
+            "type": {
+              "type_id": 97,
+              "capacity": 1,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_SendGoal_Response"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_SendGoal_Request",
+        "fields": [
+          {
+            "name": "goal_id",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "unique_identifier_msgs/msg/UUID"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "goal",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "interfaces/action/JointCommand_Goal"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/action/JointCommand_SendGoal_Response",
+        "fields": [
+          {
+            "name": "accepted",
+            "type": {
+              "type_id": 15,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "stamp",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "builtin_interfaces/msg/Time"
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "interfaces/msg/JointAngleArray",
+        "fields": [
+          {
+            "name": "angles",
+            "type": {
+              "type_id": 59,
+              "capacity": 6,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "service_msgs/msg/ServiceEventInfo",
+        "fields": [
+          {
+            "name": "event_type",
+            "type": {
+              "type_id": 3,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "stamp",
+            "type": {
+              "type_id": 1,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": "builtin_interfaces/msg/Time"
+            },
+            "default_value": ""
+          },
+          {
+            "name": "client_gid",
+            "type": {
+              "type_id": 51,
+              "capacity": 16,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "sequence_number",
+            "type": {
+              "type_id": 8,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          }
+        ]
+      },
+      {
+        "type_name": "unique_identifier_msgs/msg/UUID",
+        "fields": [
+          {
+            "name": "uuid",
+            "type": {
+              "type_id": 51,
+              "capacity": 16,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          }
+        ]
+      }
+    ]
+  },
+  "type_hashes": [
+    {
+      "type_name": "interfaces/action/JointCommand",
+      "hash_string": "RIHS01_57bc945637b5823e2cc9de3bb9ad824321ae86b30967996b7be90b7a950c8125"
+    },
+    {
+      "type_name": "builtin_interfaces/msg/Time",
+      "hash_string": "RIHS01_b106235e25a4c5ed35098aa0a61a3ee9c9b18d197f398b0e4206cea9acf9c197"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_Feedback",
+      "hash_string": "RIHS01_b1ca42c29c502a4f59232092e25b3cae17cb6a6cde3efb907b5e20462ec3b51f"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_FeedbackMessage",
+      "hash_string": "RIHS01_38c1c8f6dfd725a75758d0a7ece7ee48b6118f895ee5d2e9ff32ce2f025673e2"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_GetResult",
+      "hash_string": "RIHS01_a1da9cd41816168f21051da55e46d807e839122f6f0ef98894be889ae2413179"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_GetResult_Event",
+      "hash_string": "RIHS01_1250862b09de80abc74661f54465c6d99d73957fdfa41da6698e5199c26e59cc"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_GetResult_Request",
+      "hash_string": "RIHS01_9d0f59181fa2d664bd17575768f76ff4a74bf606fe02c7db9902a0b1abeb76b6"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_GetResult_Response",
+      "hash_string": "RIHS01_d0fbdb69eb676ce0735f18bbbc3e17e440a276df34a595847ec97c9c5fecb15c"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_Goal",
+      "hash_string": "RIHS01_6e4cf720d732a29a7e07b245dc83fa7359731e163c67e50cfbf36ee8da384171"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_Result",
+      "hash_string": "RIHS01_06ecf505c13cc0ce73f19c34083f0ae2156bdbafc41ce01d3f67d317095af460"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_SendGoal",
+      "hash_string": "RIHS01_9f8b9513525ced81f86de20a94dcce2829240c88b52c081f3634a84b60220a3d"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_SendGoal_Event",
+      "hash_string": "RIHS01_7441539451b7df37b2b6e6edfeb77ac912e9fba61ea5134f09c03525b9d67b89"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_SendGoal_Request",
+      "hash_string": "RIHS01_18b8adf31818acb8d0ba5d1570c1557ff2eff32f216d6113717468266a0ffdfe"
+    },
+    {
+      "type_name": "interfaces/action/JointCommand_SendGoal_Response",
+      "hash_string": "RIHS01_91ab7232aa6b22d000177f26a4c48d282d1627203bd6e06816953a166d193aac"
+    },
+    {
+      "type_name": "interfaces/msg/JointAngleArray",
+      "hash_string": "RIHS01_c642630f25ceca20fe886ee436afd51c32f00b7158526f2de1b332680b515c2d"
+    },
+    {
+      "type_name": "service_msgs/msg/ServiceEventInfo",
+      "hash_string": "RIHS01_41bcbbe07a75c9b52bc96bfd5c24d7f0fc0a08c0cb7921b3373c5732345a6f45"
+    },
+    {
+      "type_name": "unique_identifier_msgs/msg/UUID",
+      "hash_string": "RIHS01_1b8e8aca958cbea28fe6ef60bf6c19b683c97a9ef60bb34752067d0f2f7ab437"
+    }
+  ]
+}
