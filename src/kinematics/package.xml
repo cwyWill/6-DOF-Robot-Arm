@@ -13,6 +13,8 @@
   <depend>rclcpp_components</depend>
   <depend>geometry_msgs</depend>
   <depend>interfaces</depend>
+  <buildtool_depend>eigen3_cmake_module</buildtool_depend>
+  <depend>eigen3_cmake_module</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

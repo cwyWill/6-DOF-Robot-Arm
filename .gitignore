@@ -67,3 +67,22 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+
+# ROS2
+*.pyc
+*.iml
+*.swp
+.project
+.pydevproject
+.DS_Store
+.idea
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# colcon/CMake output
+build
+install
+log
